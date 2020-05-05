@@ -522,6 +522,65 @@ module Supply
       end
     end
 
+
+    #####################################################
+    # @!group InAppPurchases
+    #####################################################
+
+    def delete_inappproduct(package_name, sku)
+      return client.delete_inappproduct(package_name, sku)
+    end
+
+    def get_inappproduct(package_name, sku)
+      return client.get_inappproduct(package_name, sku)
+    end
+
+    def insert_inappproduct(package_name, sku, status, currency, default_price, default_language)
+
+      stringStatus = "active"
+      unless status
+        stringStatus = "inactive"
+      end
+
+      languageHash = Hash.new
+      languageHash[default_language] = Google::Apis::AndroidpublisherV3::InAppProductListing.new(
+          title: "Diamonds Small",
+          description: "Small amount of shiny diamonds"
+      )
+
+      price = Google::Apis::AndroidpublisherV3::Price.new(
+          currency: currency,
+          price_micros: default_price
+      )
+
+      product = Google::Apis::AndroidpublisherV3::InAppProduct.new(
+        package_name: package_name,
+        sku: sku,
+        status: stringStatus,
+        purchase_type: "managedUser",
+        default_price: price,
+        default_language: default_language,
+        listings: languageHash
+      )
+
+      auto_convert_prices = true
+
+      client.insert_inappproduct(package_name, product, auto_convert_missing_prices: auto_convert_prices)
+    end
+
+    def list_inappproducts(package_name)
+      result = client.list_inappproducts(package_name)
+      return result.inappproduct
+    end
+
+    def update_inappproduct(package_name, sku)
+      product = Google::Apis::AndroidpublisherV3::InAppProduct.new(
+        package_name: package_name,
+        sku: sku,
+      )
+      client.update_inappproduct(package_name, sku, product)
+    end
+
     private
 
     def ensure_active_edit!
