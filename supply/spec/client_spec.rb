@@ -55,6 +55,7 @@ describe Supply do
         expect(subject.class.method_defined?(:upload_edit_expansionfile)).to eq(true)
         expect(subject.class.method_defined?(:uploadapk_internalappsharingartifact)).to eq(true)
         expect(subject.class.method_defined?(:uploadbundle_internalappsharingartifact)).to eq(true)
+        # Add ours here?
       end
     end
   end

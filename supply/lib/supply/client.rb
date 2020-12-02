@@ -565,11 +565,13 @@ module Supply
 
       auto_convert_prices = true
 
-      client.insert_inappproduct(package_name, product, auto_convert_missing_prices: auto_convert_prices)
+        #client.insert_inappproduct(package_name, product, auto_convert_missing_prices: auto_convert_prices)
     end
 
     def list_inappproducts(package_name)
-      result = client.list_inappproducts(package_name)
+      result = call_google_api do
+        client.list_inappproducts(package_name)
+      end
       return result.inappproduct
     end
 
